@@ -12,11 +12,9 @@
  # See the License for the specific language governing permissions and
  # limitations under the License.
 
-from __future__ import absolute_import
-
 import json
 import requests
-from future.moves.urllib.parse import urlencode
+from urllib.parse import urlencode
 
 from intuitlib.utils import (
     get_discovery_doc,

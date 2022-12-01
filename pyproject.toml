@@ -13,7 +13,6 @@ python = "^3.10"
 requests = "^2.13.0"
 requests_oauthlib = "^1.0.0"
 python_jose = "^2.0.2"
-future = "^0.16.0"
 six = "^1.10.0"
 enum-compat = "^0.0.3"
 
