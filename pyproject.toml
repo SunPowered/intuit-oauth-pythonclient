@@ -3,7 +3,7 @@ name = "intuit-oauth-client"
 version = "2.0.0"
 description = "An updated fork of Intuit's python-oauthclient library"
 authors = ["SunPowered <SunPowered@github.com>"]
-url = "https://github.com/SunPowered/intuit-oauth-pythonclient"
+homepage = "https://github.com/SunPowered/intuit-oauth-pythonclient"
 license = "Apache 2.0"
 readme = "README.rst"
 packages = [{include = "intuitlib"}]
