@@ -33,6 +33,23 @@ from intuitlib.client import AuthClient
 from intuitlib.exceptions import AuthClientError
 from tests.helper import MockResponse
 
+@pytest.fixture()
+def auth_client_default():
+    return AuthClient('clientId','secret','https://www.mydemoapp.com/oauth-redirect','sandbox')
+
+@pytest.fixture()
+def auth_client(auth_client_default):
+    auth_client_default._discovery_doc = {
+        'authorization_endpoint': 'http://test',
+        'token_endpoint': 'http://test',
+        'revocation_endpoint': 'http://test',
+        'issuer': 'http://test',
+        'jwks_uri': 'http://test',
+        'userinfo_endpoint': 'http://test',
+    }
+    return auth_client_default
+
+
 class TestUtils():
 
     auth_client = AuthClient('client_id','client_secret','redirect_uri','sandbox')
@@ -79,18 +96,18 @@ class TestUtils():
         
         assert scope == 'openid email'
 
-    def test_set_attributes(self):
+    def test_set_attributes(self, auth_client):
         response = {
             'refresh_token': 'testrefresh',
             'access_token': 'testaccess',
             'test': 'testing',
             'id_token': 'token'
         }
-        set_attributes(self.auth_client, response)
+        set_attributes(auth_client, response)
         
-        assert self.auth_client.refresh_token == response['refresh_token']
-        assert self.auth_client.access_token == response['access_token']
-        assert not self.auth_client.id_token
+        assert auth_client.refresh_token == response['refresh_token']
+        assert auth_client.access_token == response['access_token']
+        assert not auth_client.id_token
     
     @mock.patch('intuitlib.utils.requests.request')
     def test_send_request_bad_request(self, mock_post):
@@ -101,30 +118,30 @@ class TestUtils():
             send_request('POST', 'url', {}, '', body={})
 
     @mock.patch('intuitlib.utils.requests.request')
-    def test_send_request_ok(self, mock_post):
+    def test_send_request_ok(self, mock_post, auth_client):
         mock_resp = self.mock_request(status=200, content={'access_token': 'testaccess'})
         mock_post.return_value = mock_resp
 
-        send_request('POST', 'url', {}, self.auth_client, body={})
-        assert self.auth_client.access_token == 'testaccess'
+        send_request('POST', 'url', {}, auth_client, body={})
+        assert auth_client.access_token == 'testaccess'
     
     @mock.patch('intuitlib.utils.Session.request')
-    def test_send_request_session_ok(self, mock_post):
+    def test_send_request_session_ok(self, mock_post, auth_client):
         mock_resp = self.mock_request(status=200, content={'access_token': 'testaccess'})
         mock_post.return_value = mock_resp
         session = requests.Session()
 
-        send_request('POST', 'url', {}, self.auth_client, body={}, session=session)
-        assert self.auth_client.access_token == 'testaccess'
+        send_request('POST', 'url', {}, auth_client, body={}, session=session)
+        assert auth_client.access_token == 'testaccess'
 
     @mock.patch('intuitlib.utils.Session.request')
-    def test_send_request_session_bad(self, mock_post):
+    def test_send_request_session_bad(self, mock_post, auth_client):
         mock_resp = self.mock_request(status=400, content={'access_token': 'testaccess'})
         mock_post.return_value = mock_resp
         session = requests.Session()
 
         with pytest.raises(AuthClientError):
-            send_request('POST', 'url', {}, self.auth_client, body={}, session=session)
+            send_request('POST', 'url', {}, auth_client, body={}, session=session)
 
     def test_generate_token(self):
         token = generate_token()

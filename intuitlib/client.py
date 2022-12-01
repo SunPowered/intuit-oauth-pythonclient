@@ -51,13 +51,13 @@ class AuthClient(requests.Session):
         self.state_token = state_token
 
         # Discovery doc contains endpoints based on environment specified
-        discovery_doc = get_discovery_doc(self.environment, session=self)
-        self.auth_endpoint = discovery_doc['authorization_endpoint']
-        self.token_endpoint = discovery_doc['token_endpoint']
-        self.revoke_endpoint = discovery_doc['revocation_endpoint']
-        self.issuer_uri = discovery_doc['issuer']
-        self.jwks_uri = discovery_doc['jwks_uri']
-        self.user_info_url = discovery_doc['userinfo_endpoint']
+        self._discovery_doc = None
+        self._auth_endpoint = None
+        self._token_endpoint = None
+        self._revoke_endpoint = None
+        self._issuer_uri = None
+        self._jwks_uri = None
+        self._user_info_url = None
 
         # response values
         self.realm_id = realm_id
@@ -66,7 +66,49 @@ class AuthClient(requests.Session):
         self.refresh_token = refresh_token
         self.x_refresh_token_expires_in = None
         self.id_token = id_token
-        
+    
+    @property
+    def discovery_doc(self):
+        if self._discovery_doc is None:
+            self._discovery_doc = get_discovery_doc(self.environment, session=self)
+        return self._discovery_doc
+
+    @property
+    def auth_endpoint(self):
+        if self._auth_endpoint is None:
+            self._auth_endpoint = self.discovery_doc['authorization_endpoint']
+        return self._auth_endpoint
+
+    @property
+    def token_endpoint(self):
+        if self._token_endpoint is None:
+            self._token_endpoint = self.discovery_doc['token_endpoint']
+        return self._token_endpoint
+
+    @property
+    def revoke_endpoint(self):
+        if self._revoke_endpoint is None:
+            self._revoke_endpoint = self.discovery_doc['revocation_endpoint']
+        return self._revoke_endpoint
+
+    @property
+    def issuer_uri(self):
+        if self._issuer_uri is None:
+            self._issuer_uri = self.discovery_doc['issuer']
+        return self._issuer_uri
+    
+    @property
+    def jwks_uri(self):
+        if self._jwks_uri is None:
+            self._jwks_uri = self.discovery_doc['jwks_uri']
+        return self._jwks_uri
+
+    @property
+    def user_info_url(self):
+        if self._user_info_url is None:
+            self._user_info_url = self.discovery_doc['userinfo_endpoint']
+        return self._user_info_url
+
     def setAuthorizeURLs(self, urlObject):
         """Set authorization url using custom values passed in the data dict
         :param **data: data dict for custom authorizationURLS
