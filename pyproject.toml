@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "intuit-oauth-client"
+version = "2.0.0"
+description = "An updated fork of Intuit's python-oauthclient library"
+authors = ["SunPowered <SunPowered@github.com>"]
+url = "https://github.com/SunPowered/intuit-oauth-pythonclient"
+license = "Apache 2.0"
+readme = "README.rst"
+packages = [{include = "intuitlib"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.13.0"
+requests_oauthlib = "^1.0.0"
+python_jose = "^2.0.2"
+future = "^0.16.0"
+six = "^1.10.0"
+enum-compat = "^0.0.3"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^0.991"
+pytest = "^7.2.0"
+coverage = "^6.5.0"
+pytest-cov = "^4.0.0"
+mock = "^4.0.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
