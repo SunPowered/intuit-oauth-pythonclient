@@ -24,11 +24,11 @@ from intuitlib.utils import (
     send_request,
 )
 
-class AuthClient(requests.Session):
+class AuthClient:
     """Handles OAuth 2.0 and OpenID Connect flows to get access to User Info API, Accounting APIs and Payments APIs
     """
 
-    def __init__(self, client_id, client_secret, redirect_uri, environment, state_token=None, access_token=None, refresh_token=None, id_token=None, realm_id=None):
+    def __init__(self, client_id, client_secret, redirect_uri, environment, state_token=None, access_token=None, refresh_token=None, id_token=None, realm_id=None, session=None):
         """Constructor for AuthClient
         
         :param client_id: Client ID found in developer account Keys tab
@@ -40,9 +40,8 @@ class AuthClient(requests.Session):
         :param refresh_token: Refresh Token for refresh or revoke functionality, defaults to None
         :param id_token: ID Token for OpenID flow, defaults to None
         :param realm_id: QBO Realm/Company ID, defaults to None
+        :param session: Optional requests.Session object to use
         """
-
-        super(AuthClient, self).__init__()
 
         self.client_id = client_id
         self.client_secret = client_secret
@@ -66,7 +65,12 @@ class AuthClient(requests.Session):
         self.refresh_token = refresh_token
         self.x_refresh_token_expires_in = None
         self.id_token = id_token
-    
+
+        if session is not None and not isinstance(session, requests.Session):
+            raise TypeError(f"Bad parameter type for session.  Expected requests.Session, got {type(session)}")    
+        
+        self.session = session or requests.Session()
+        
     @property
     def discovery_doc(self):
         if self._discovery_doc is None:
