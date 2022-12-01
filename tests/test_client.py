@@ -15,7 +15,6 @@
 
 """Test module for intuitlib.client
 """
-from __future__ import unicode_literals
 import pytest
 import mock
 

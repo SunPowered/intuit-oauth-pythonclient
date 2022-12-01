@@ -14,8 +14,6 @@
 
 """This module contains utility methods used by this library
 """
-from __future__ import absolute_import
-
 import json
 from base64 import b64encode, b64decode, urlsafe_b64decode
 from datetime import datetime
@@ -24,7 +22,6 @@ import string
 from jose import jwk
 import requests
 from requests.sessions import Session
-import six
 from requests_oauthlib import OAuth1
 
 
@@ -109,9 +106,7 @@ def get_auth_header(client_id, client_secret):
     :return: Authorization header
     """
 
-    auth_header = '{0}:{1}'.format(client_id, client_secret)
-    if six.PY3:
-        auth_header = auth_header.encode('utf-8')
+    auth_header = '{0}:{1}'.format(client_id, client_secret).encode('utf-8')
     return ' '.join(['Basic', b64encode(auth_header).decode('utf-8')])
 
 def scopes_to_string(scopes):
