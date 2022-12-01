@@ -12,8 +12,7 @@ packages = [{include = "intuitlib"}]
 python = "^3.10"
 requests = "^2.13.0"
 requests_oauthlib = "^1.0.0"
-python_jose = "^2.0.2"
-six = "^1.10.0"
+python_jose = "^3.3.0"
 enum-compat = "^0.0.3"
 
 [tool.poetry.group.dev.dependencies]
