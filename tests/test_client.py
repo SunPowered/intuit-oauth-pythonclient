@@ -76,12 +76,12 @@ class TestClient():
         }
         assert auth_params == param_values_to_string
 
-    @mock.patch('intuitlib.utils.requests.Session')
-    def test_exceptions_all_bad_request(self, mock_post, auth_client_default):
+    @mock.patch('intuitlib.utils.requests.Session.request')
+    def test_exceptions_all_bad_request(self, mock_post, auth_client):
         mock_resp = self.mock_request(status=400)
         mock_post.return_value = mock_resp
         
-        auth_client = auth_client_default
+        # auth_client = auth_client_default
         with pytest.raises(AuthClientError):
             auth_client.get_bearer_token('test_code', realm_id='realm')
         
