@@ -66,6 +66,7 @@ class AuthClient:
         self.x_refresh_token_expires_in = None
         self.id_token = id_token
 
+        # Session
         if session is not None and not isinstance(session, requests.Session):
             raise TypeError(f"Bad parameter type for session.  Expected requests.Session, got {type(session)}")    
         
@@ -73,42 +74,49 @@ class AuthClient:
         
     @property
     def discovery_doc(self):
+        """Cache the discovery doc dictionary returned from get_discovery_doc"""
         if self._discovery_doc is None:
             self._discovery_doc = get_discovery_doc(self.environment, session=self)
         return self._discovery_doc
 
     @property
     def auth_endpoint(self):
+        """Cache authorization_endpoint from the discovery doc"""
         if self._auth_endpoint is None:
             self._auth_endpoint = self.discovery_doc['authorization_endpoint']
         return self._auth_endpoint
 
     @property
     def token_endpoint(self):
+        """Cache token_endpoint from the discovery doc"""
         if self._token_endpoint is None:
             self._token_endpoint = self.discovery_doc['token_endpoint']
         return self._token_endpoint
 
     @property
     def revoke_endpoint(self):
+        """Cache revocation_endpoint from the discovery doc"""
         if self._revoke_endpoint is None:
             self._revoke_endpoint = self.discovery_doc['revocation_endpoint']
         return self._revoke_endpoint
 
     @property
     def issuer_uri(self):
+        """Cache issuer from the discovery doc"""
         if self._issuer_uri is None:
             self._issuer_uri = self.discovery_doc['issuer']
         return self._issuer_uri
     
     @property
     def jwks_uri(self):
+        """Cache jwks_uri from the discovery doc"""
         if self._jwks_uri is None:
             self._jwks_uri = self.discovery_doc['jwks_uri']
         return self._jwks_uri
 
     @property
     def user_info_url(self):
+        """Cache userinfo_endpoint from the discovery doc"""
         if self._user_info_url is None:
             self._user_info_url = self.discovery_doc['userinfo_endpoint']
         return self._user_info_url
