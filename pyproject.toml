@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "intuit-oauth-client"
-version = "2.0.0"
+version = "2.0.1"
 description = "An updated fork of Intuit's python-oauthclient library"
 authors = ["SunPowered <SunPowered@github.com>"]
 homepage = "https://github.com/SunPowered/intuit-oauth-pythonclient"
@@ -25,6 +25,7 @@ mock = "^4.0.3"
 markers = [
     "http: marks tests that perform HTTP calls",
 ]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
