@@ -5,7 +5,7 @@ description = "An updated fork of Intuit's python-oauthclient library"
 authors = ["SunPowered <SunPowered@github.com>"]
 homepage = "https://github.com/SunPowered/intuit-oauth-pythonclient"
 license = "Apache 2.0"
-readme = "README.rst"
+readme = "README.md"
 packages = [{include = "intuitlib"}]
 
 [tool.poetry.dependencies]
