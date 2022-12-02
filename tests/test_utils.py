@@ -57,18 +57,21 @@ class TestUtils():
     def mock_request(self, status=200, content=None):
         return MockResponse(status=status, content=content)
 
+    @pytest.mark.http
     def test_get_discovery_doc_sandbox(self):
         discovery_doc = get_discovery_doc('sandbox')
         
         assert discovery_doc['issuer'] == 'https://oauth.platform.intuit.com/op/v1'
         assert discovery_doc['userinfo_endpoint'] == 'https://sandbox-accounts.platform.intuit.com/v1/openid_connect/userinfo'
 
+    @pytest.mark.http
     def test_get_discovery_doc_production(self):
         discovery_doc = get_discovery_doc('production')
         
         assert discovery_doc['issuer'] == 'https://oauth.platform.intuit.com/op/v1'
         assert discovery_doc['userinfo_endpoint'] == 'https://accounts.platform.intuit.com/v1/openid_connect/userinfo'
 
+    @pytest.mark.http
     def test_get_discovery_doc_custom_url_input(self):
         discovery_doc = get_discovery_doc('https://developer.intuit.com/.well-known/openid_sandbox_configuration/')
         
